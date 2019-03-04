@@ -4,7 +4,7 @@ React DOMs for HTTP/HTTPS protocols.
 
 ##Introducing
 
-`react-http-dom` is a react lib for implementing HTTP/HTTPS protocols via `React DOMs`.
+`react-http-dom` is a `reactJS` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols.
 
 ##How to use
 
