@@ -6,7 +6,8 @@ React DOMs for HTTP/HTTPS protocols.
 
 ## Introducing
 
-`react-http-dom` is a `ReactJS` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`POST`,`PUT`,`DELETE`,`HEAD` these 5 methods.
+`react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`POST`,`PUT`,`DELETE`,`HEAD` these 5 methods.
+This is a `Promise` free repository, if you do prefer `Promise`, I advise you to use `react-axios` which depends on the famous lib `axios` and implemented with `Promise`.
 
 ## Integration
 
@@ -16,7 +17,7 @@ Using Npm:
 npm install react-http-dom
 ```
 
-Or using Yarn
+Or using Yarn:
 
 ```
 yarn add react-http-dom
@@ -36,25 +37,23 @@ import { HttpGet } from 'http-react-dom';
 ...
 
 render() {
-  ...
-
   return (
     <HttpGet uri="https://foo.url/bar">
-    {({loading, error, data, retry}) => {
-      if (error) {
-        return (
-          <div>Oops! We had an error!</div>
-          <button onClick={retry}>Retry!</button>
-        );
-      }
+      {({ loading, error, data, retry }) => {
+        if (error) {
+          return (
+            <div>Oops! We had an error!</div>
+            <button onClick={retry}>Retry!</button>
+          );
+        }
 
-      if (loading || !data) {
-        return (<div>Loading...</div>);
-      }
+        if (loading || !data) {
+          return (<div>Loading...</div>);
+        }
 
-      // render your UI via data
-      return data;
-    }}
+        // render your UI via data
+        return data;
+      }}
     </HttpGet>
   );
 }
@@ -63,7 +62,7 @@ render() {
 
 ### Idempotent Methods / Unsafe Methods
 
-For idempotent methods(aka unsafe methods) like `POST`, `PUT` and `DELETE`, these methods are usually fired by some manual events, so we offer you the functions to let you call them at any moment anytime you want. Oppsitely, these methods don't recive any props, you should pass the `uri`,`params` and `options` to the functions when you called and those functions give you the result back through callbacks.
+For idempotent methods(aka unsafe methods) like `POST`, `PUT` and `DELETE`, these methods are usually fired by some manual events, so we offer you the functions to let you call them at any moment you want. Instead, these methods don't recieve any props, you should pass the `uri`,`params` and `options` to the functions while you calling and those functions give you the result back through callbacks.
 
 Example:
 
@@ -77,29 +76,29 @@ render() {
 
   return (
     <HttpPost>
-      {({post, upload}) => {
+      {({ post, upload }) => {
         const postData = (params) => {
           // Post data in body or x-www-form-urlencoded
           post({
             uri: "https://foo.url/bar",
             params,
-            onResponse: (data) => {
+            onResponse: data => {
               alert("Succeed!");
             },
-            onError: (error) => {
+            onError: error => {
               alert("Failed!");
             }
           })
         };
 
-        const uploadData = (params) => {
+        const uploadData = params => {
           // Post form-data
           upload({
             uri: "https://foo.url/bar",
             params,
-            onResponse: (data) => {
+            onResponse: data => {
               alert("Succeed!");
-            }, onError: (error) => {
+            }, onError: error => {
               alert("Failed!");
             }
           });
@@ -117,6 +116,53 @@ render() {
 }
 
 ```
+
+### HOC
+
+We offer HOC to let you reduce the stack of DOMs and make your code prettier, Here is what we do about the `GET` method:
+
+```javascript
+import { withHttpGet } from 'http-react-dom';
+
+...
+
+class Foo extends Component {
+  ...
+
+  render() {
+    const { loading, error, data, retry } = this.props;
+
+    if (error) {
+      return (
+        <div>Oops! We had an error!</div>
+        <button onClick={retry}>Retry!</button>
+      );
+    }
+
+    if (loading || !data) {
+      return (<div>Loading...</div>);
+    }
+
+    // render your UI via data
+    return data;
+  }
+}
+
+export default withHttpGet({ uri: "https://foo.url/bar" })(Foo);
+
+```
+
+Every params you pass to the HOCs are completely the same as DOM components.
+
+### All Supported Methods
+
+| Method | DOM Component | Props                | Injected Props              | HOC Name       |
+| ------ | ------------- | -------------------- | --------------------------- | -------------- |
+| GET    | HttpGet       | uri, options         | loading, data, error, retry | withHttpGet    |
+| HEAD   | HttpHead      | uri, options         | loading, data, error, retry | withHttpHead   |
+| POST   | HttpPost      | uri, params, options | post, upload                | withHttpPost   |
+| PUT    | HttpPut       | uri, params, options | put, upload                 | withHttpPut    |
+| DELETE | HttpDelete    | uri, options         | delete                      | withHttpDelete |
 
 ## License
 
