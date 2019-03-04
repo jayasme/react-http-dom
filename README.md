@@ -27,7 +27,7 @@ yarn add react-http-dom
 
 ### Read-Only Methods / Safe Methods
 
-For read-only methods(aka safe methods) like `GET` and `HEAD`, you need to pass `uri` and `options` to the DOM. The data and status are injected into the render function of the DOM's child, `loading` to let you know the latest loading status of the request, `error` to let you know wether the request was failed with some information, `data` to pass you the accurate data that you requested from the request, `retry` to let you send the request once more if you'd like to.
+For read-only methods(aka safe methods) like `GET` and `HEAD`, you need to pass `uri` and `options` to the DOM. The data and status are injected into the render function of the DOM's child, `loading` to let you know the latest loading status of the request, `error` to let you know whether the request was failed with some information, `data` to pass you the accurate result that you requested from the uri, `retry` to let you send the request once more if you'd like to.
 
 Example:
 
