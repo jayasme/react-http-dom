@@ -26,10 +26,6 @@
     "request"
   ],
   "homepage": "https://github.com/jayasme/react-http-dom#readme",
-  "peerDependencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
-  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",
@@ -54,7 +50,7 @@
   },
   "dependencies": {
     "prop-types": "^15.7.2",
-    "react": "^0.14.0 || ^15.0.0 || ^16.0.0",
+    "react": "^15.0.0 || ^16.0.0",
     "request": "^2.88.0"
   }
 }
