@@ -27,7 +27,7 @@ yarn add react-http-dom
 
 ### Read-Only Methods / Safe Methods
 
-For read-only methods(aka safe methods) like `GET` and `HEAD`, you need to pass `uri` and `options` to the DOM. The data and status we offered are returned in the render function of the DOM, `loading` to let you know the latest loading status of the request, `error` to let you know wether the request was failed with some information, `data` to pass you the accurate data that you requested from the request, `retry` to let you send the request once more if you'd like to.
+For read-only methods(aka safe methods) like `GET` and `HEAD`, you need to pass `uri` and `options` to the DOM. The data and status are injected into the render function of the DOM's child, `loading` to let you know the latest loading status of the request, `error` to let you know wether the request was failed with some information, `data` to pass you the accurate data that you requested from the request, `retry` to let you send the request once more if you'd like to.
 
 Example:
 
@@ -62,7 +62,7 @@ render() {
 
 ### Idempotent Methods / Unsafe Methods
 
-For idempotent methods(aka unsafe methods) like `POST`, `PUT` and `DELETE`, these methods are usually fired by some manual events, so we offer you the functions to let you call them at any moment you want. Instead, these methods don't recieve any props, you should pass the `uri`,`params` and `options` to the functions while you calling and those functions give you the result back through callbacks.
+For idempotent methods(aka unsafe methods) like `POST`, `PUT` and `DELETE`, these methods are usually fired by some manual events, so we offer you the injected functions to let you call them at any moment you want. Instead, these methods don't recieve any props, so you must pass the `uri`, `params` and `options` to the functions while you calling them and those functions give you the results back through their callbacks.
 
 Example:
 
