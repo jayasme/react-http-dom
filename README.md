@@ -152,17 +152,17 @@ export default withHttpGet({ uri: "https://foo.url/bar" })(Foo);
 
 ```
 
-Every params you pass to the HOCs are completely the same as DOM components.
+Every param you pass to the HOCs is completely the same as DOM components.
 
 ### All Supported Methods
 
-| Method | DOM Component | Props                | Injected Props              | HOC Name       |
-| ------ | ------------- | -------------------- | --------------------------- | -------------- |
-| GET    | HttpGet       | uri, options         | loading, data, error, retry | withHttpGet    |
-| HEAD   | HttpHead      | uri, options         | loading, data, error, retry | withHttpHead   |
-| POST   | HttpPost      | uri, params, options | post, upload                | withHttpPost   |
-| PUT    | HttpPut       | uri, params, options | put, upload                 | withHttpPut    |
-| DELETE | HttpDelete    | uri, options         | delete                      | withHttpDelete |
+| Method | DOM Name   | Props        | Injected Props                                                                                             | HOC Name       |
+| ------ | ---------- | ------------ | ---------------------------------------------------------------------------------------------------------- | -------------- |
+| GET    | HttpGet    | uri, options | loading, data, error, retry({ uri, options })                                                              | withHttpGet    |
+| HEAD   | HttpHead   | uri, options | loading, data, error, retry({ uri, options })                                                              | withHttpHead   |
+| POST   | HttpPost   | -            | post({ uri, params, options, onResponse, onError }), upload({ uri, params, options, onResponse, onError }) | withHttpPost   |
+| PUT    | HttpPut    | -            | put({ uri, params, options, onResponse, onError }), upload({ uri, params, options, onResponse, onError })  | withHttpPut    |
+| DELETE | HttpDelete | -            | delete({ uri, options, onResponse, onError })                                                              | withHttpDelete |
 
 ## License
 
