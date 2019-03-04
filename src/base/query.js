@@ -1,39 +1,42 @@
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import request from 'request';
 
 import HttpError from './error';
 
-class Get extends PureComponent {
+class Query extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      loading: false,
       uri: props.uri,
+      method: props.method,
+      loading: false,
       data: undefined,
       error: undefined,
     };
   }
 
   componentDidMount() {
-    this.fetchData(this.props.uri);
+    this.sendRequest(this.props.uri);
   }
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.uri !== this.state.uri
-      || nextProps.options !== this.state.options
+      nextProps.uri !== this.state.uri ||
+      nextProps.method !== this.state.method ||
+      nextProps.options !== this.state.options
     ) {
       // Fetch data when the changes of param uri and options detected.
       this.setState({
         uri: nextProps.uri,
+        method: nextProps.method,
         options: nextProps.options,
       });
 
       // Request data in the next frame
       requestAnimationFrame(() => {
-        this.fetchData(nextProps.uri, nextProps.options);
+        this.sendRequest(nextProps.uri, nextProps.method, nextProps.options);
       });
     }
   }
@@ -60,7 +63,7 @@ class Get extends PureComponent {
     if (uri !== this.state.uri || options !== this.state.options) {
       this.setState({ uri, options });
     } else {
-      this.fetchData(this.props.uri, this.props.options);
+      this.sendRequest(this.props.uri, this.props.method, this.props.options);
     }
   };
 
@@ -76,12 +79,13 @@ class Get extends PureComponent {
   }
 }
 
-Get.defaultProps = {
+Query.defaultProps = {
   options: {},
 };
 
-Get.propTypes = {
+Query.propTypes = {
   uri: PropTypes.string.isRequired,
+  method: PropTypes.string.isRequired,
   children: PropTypes.elementType({
     data: PropTypes.object,
     loading: PropTypes.bool,
@@ -91,14 +95,4 @@ Get.propTypes = {
   options: PropTypes.object,
 };
 
-const withGet = ({ uri, options }) => (WrappedComponent) => {
-  const EnhancedComponent = () => (
-    <Get uri={uri} options={options}>
-      {props => <WrappedComponent {...props} />}
-    </Get>
-  );
-
-  return EnhancedComponent;
-};
-
-export { Get, withGet };
+export default Query;

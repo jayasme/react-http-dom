@@ -1,11 +1,10 @@
-import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import request from 'request';
 
 import HttpError from './error';
 
-class Mutation extends PureComponent {
-  sendRequest = (uri, method, options, onResponse, onError) => {
+const Mutation = () => {
+  const sendRequest = (uri, method, options = {}, onResponse, onError) => {
     if (!uri) {
       throw new HttpError(undefined, "Param 'uri' must not be empty.", null);
     }
@@ -26,14 +25,12 @@ class Mutation extends PureComponent {
     });
   };
 
-  render() {
-    const { children } = this.props;
-    return children({
-      mutate: ({ uri, method, options, onResponse, onError }) =>
-        this.sendRequest(uri, method, options, onResponse, onError),
-    });
-  }
-}
+  const { children } = this.props;
+  return children({
+    mutate: ({ uri, method, options, onResponse, onError }) =>
+      sendRequest(uri, method, options, onResponse, onError),
+  });
+};
 
 Mutation.propTypes = {
   children: PropTypes.elementType({
