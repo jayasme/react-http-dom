@@ -1,6 +1,6 @@
 {
   "name": "react-http-dom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React DOMs for HTTP/HTTPS protocols.",
   "main": "index.js",
   "engines": {
