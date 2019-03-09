@@ -4,7 +4,7 @@ React DOMs for HTTP/HTTPS protocols.
 
 [![npm package](https://nodei.co/npm/react-http-dom.png)](https://nodei.co/npm/react-http-dom/)
 
-For English descriptions click [HERE](/README.md 'HERE')。
+For English descriptions click [HERE](/README.md 'HERE').
 
 ## 介绍
 
@@ -13,7 +13,7 @@ For English descriptions click [HERE](/README.md 'HERE')。
 
 **警告：本库尚在开发中，并且不支持 `React Native`。**
 
-## 继承
+## 集成
 
 使用 Npm:
 
