@@ -6,7 +6,7 @@ React DOMs for HTTP/HTTPS protocols.
 
 ## Introducing
 
-`react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`POST`,`PUT`,`DELETE`,`HEAD` these 5 methods.
+`react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`HEAD`,`POST`,`PUT`,`PATCH`,`DELETE`, these 6 methods.
 This is a `Promise` free repository, if you do prefer `Promise`, I personally advise you to use `react-axios` which depends on the famous lib `axios` with `Promise`.
 
 ## Integration
