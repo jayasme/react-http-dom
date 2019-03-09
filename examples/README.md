@@ -6,13 +6,15 @@ Here are some examples of each method, this project runs with `webpack-dev-serve
 Using Npm:
 
 ```
+cd examples
 npm install
-npm start
+npm run start
 ```
 
 Using Yarn:
 
 ```
+cd examples
 yarn
 yarn start
 ```

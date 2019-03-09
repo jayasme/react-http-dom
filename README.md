@@ -6,7 +6,7 @@ React DOMs for HTTP/HTTPS protocols.
 
 ## Introducing
 
-`react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`HEAD`,`POST`,`PUT`,`PATCH`,`DELETE`, these 6 methods.
+`react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`HEAD`,`POST`,`PUT`,`PATCH`,`DELETE` these 6 methods.
 This is a `Promise` free repository, if you do prefer `Promise`, I personally advise you to use `react-axios` which depends on the famous lib `axios` with `Promise`.
 
 **WARNING: This lib is still under devlopment and this is not a lib for `React Native`.**
@@ -64,7 +64,7 @@ render() {
 
 ### Idempotent Methods / Unsafe Methods
 
-For idempotent methods(aka unsafe methods) like `POST`, `PUT`, `PATCH` and `DELETE`, these methods are usually fired by some manual events, so it offers you the injected functions to let you call them at any moment you want. Instead, these methods don't recieve any props, so you must pass the `uri`, `params` and `options` to the functions while you calling them and those functions give you the results back through their callbacks.
+For idempotent methods(aka unsafe methods) like `POST`, `PUT`, `PATCH` and `DELETE`, these methods are usually fired by some manual events, so they offer you the injected functions to let you call them at any moment you want. Instead, these methods don't recieve any props, so you must pass the `uri`, `params` and `options` to the functions while you calling them and those functions give you the results back through their callbacks.
 
 Example:
 
