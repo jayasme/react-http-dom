@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withHttpGet } from '../../../lib';
+import { withHttpHead } from '../../../lib';
 
-const WithHttpGetPage = ({ loading, data, error }) => {
+const WithHttpHeadPage = ({ loading, data, error }) => {
   if (error) {
     return (
       <div>
@@ -20,12 +20,12 @@ const WithHttpGetPage = ({ loading, data, error }) => {
   return <pre>{data}</pre>;
 };
 
-WithHttpGetPage.propTypes = {
+WithHttpHeadPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object.isRequired,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
 };
 
-export default withHttpGet({
-  uri: 'http://httpbin.org/get?query=1',
-})(WithHttpGetPage);
+export default withHttpHead({
+  uri: 'http://httpbin.org/head',
+})(WithHttpHeadPage);

@@ -22,12 +22,7 @@ HttpHead.defaultProps = {
 
 HttpHead.propTypes = {
   uri: PropTypes.string.isRequired,
-  children: PropTypes.elementType({
-    data: PropTypes.object,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    retry: PropTypes.func,
-  }).isRequired,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   options: PropTypes.object,
 };
 

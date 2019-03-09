@@ -9,45 +9,87 @@ class HttpPost extends PureComponent {
     return (
       <Mutation>
         {({ mutate }) => {
-          const sendPostRequest = (
+          const sendPostData = ({
             uri,
-            params,
+            data,
             options,
             onResponse,
             onError,
-          ) => {
-            const form = { form: params };
+          }) => {
             mutate({
               uri,
               method: 'POST',
-              form,
-              ...options,
+              options: {
+                ...options,
+                body: data,
+              },
               onResponse,
               onError,
             });
           };
 
-          const sendUploadRequest = (
+          const sendPostJson = ({
             uri,
-            params,
+            json,
             options,
             onResponse,
             onError,
-          ) => {
-            const form = { form: params };
+          }) => {
             mutate({
               uri,
               method: 'POST',
-              form,
-              ...options,
+              options: {
+                ...options,
+                json,
+              },
+              onResponse,
+              onError,
+            });
+          };
+
+          const sendPostForm = ({
+            uri,
+            form,
+            options = {},
+            onResponse,
+            onError,
+          }) => {
+            const isFormData = Object.values(form).find(
+              value => typeof value === 'object',
+            );
+
+            const coptions = isFormData
+              ? {
+                  ...options,
+                  headers: {
+                    ...options.headers,
+                    'content-type': 'multipart/form-data',
+                    'transfer-encoding': 'chunked',
+                  },
+                  form,
+                }
+              : {
+                  ...options,
+                  headers: {
+                    ...options.headers,
+                    'content-type': 'application/x-www-form-urlencoded',
+                  },
+                  form,
+                };
+
+            mutate({
+              uri,
+              method: 'POST',
+              options: coptions,
               onResponse,
               onError,
             });
           };
 
           return children({
-            post: sendPostRequest,
-            upload: sendUploadRequest,
+            sendPostData,
+            sendPostJson,
+            sendPostForm,
           });
         }}
       </Mutation>
@@ -55,35 +97,24 @@ class HttpPost extends PureComponent {
   }
 }
 
+HttpPost.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+};
+
 const withHttpPost = () => WrappedComponent => {
   const EnhancedComponent = () => (
     <HttpPost>
-      {({ sendPost, sendUpload }) => (
-        <WrappedComponent sendPost={sendPost} sendUpload={sendUpload} />
+      {({ sendPostData, sendPostJson, sendPostForm }) => (
+        <WrappedComponent
+          sendPostData={sendPostData}
+          sendPostJson={sendPostJson}
+          sendPostForm={sendPostForm}
+        />
       )}
     </HttpPost>
   );
 
   return EnhancedComponent;
-};
-
-HttpPost.propTypes = {
-  children: PropTypes.elementType({
-    sendPost: PropTypes.elementType({
-      uri: PropTypes.string,
-      params: PropTypes.object,
-      options: PropTypes.object,
-      onResponse: PropTypes.func,
-      onError: PropTypes.func,
-    }),
-    sendUpload: PropTypes.elementType({
-      uri: PropTypes.string,
-      params: PropTypes.object,
-      options: PropTypes.object,
-      onResponse: PropTypes.func,
-      onError: PropTypes.func,
-    }),
-  }).isRequired,
 };
 
 export { HttpPost, withHttpPost };

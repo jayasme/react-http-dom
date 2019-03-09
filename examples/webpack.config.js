@@ -17,10 +17,6 @@ module.exports = {
         exclude: /node_modules/,
         use: 'babel-loader',
       },
-      {
-        test: /(\.css)$/,
-        use: ['style-loader'],
-      },
     ],
   },
 
@@ -52,8 +48,14 @@ module.exports = {
     }),
   ],
 
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+  },
+
   devServer: {
-    disableHostCheck: true, // a better way is to use "public" to avoid security issue.
+    disableHostCheck: true,
     historyApiFallback: true,
   },
 };

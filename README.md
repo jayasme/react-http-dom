@@ -7,14 +7,14 @@ React DOMs for HTTP/HTTPS protocols.
 ## Introducing
 
 `react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`POST`,`PUT`,`DELETE`,`HEAD` these 5 methods.
-This is a `Promise` free repository, if you do prefer `Promise`, I advise you to use `react-axios` which depends on the famous lib `axios` and implemented with `Promise`.
+This is a `Promise` free repository, if you do prefer `Promise`, I personally advise you to use `react-axios` which depends on the famous lib `axios` with `Promise`.
 
 ## Integration
 
 Using Npm:
 
 ```
-npm install react-http-dom
+npm install --save react-http-dom
 ```
 
 Or using Yarn:
@@ -38,7 +38,7 @@ import { HttpGet } from 'http-react-dom';
 
 render() {
   return (
-    <HttpGet uri="https://foo.url/bar">
+    <HttpGet uri="https://foo.url/bar?query=query">
       {({ loading, error, data, retry }) => {
         if (error) {
           return (
@@ -62,7 +62,7 @@ render() {
 
 ### Idempotent Methods / Unsafe Methods
 
-For idempotent methods(aka unsafe methods) like `POST`, `PUT` and `DELETE`, these methods are usually fired by some manual events, so we offer you the injected functions to let you call them at any moment you want. Instead, these methods don't recieve any props, so you must pass the `uri`, `params` and `options` to the functions while you calling them and those functions give you the results back through their callbacks.
+For idempotent methods(aka unsafe methods) like `POST`, `PUT`, `PATCH` and `DELETE`, these methods are usually fired by some manual events, so it offers you the injected functions to let you call them at any moment you want. Instead, these methods don't recieve any props, so you must pass the `uri`, `params` and `options` to the functions while you calling them and those functions give you the results back through their callbacks.
 
 Example:
 
@@ -76,12 +76,12 @@ render() {
 
   return (
     <HttpPost>
-      {({ post, upload }) => {
-        const postData = (params) => {
-          // Post data in body or x-www-form-urlencoded
-          post({
+      {({ sendPostJson, sendPostForm }) => {
+        const onSendPostJson = json => {
+          // Post Json
+          sendPostJson({
             uri: "https://foo.url/bar",
-            params,
+            json,
             onResponse: data => {
               alert("Succeed!");
             },
@@ -91,11 +91,11 @@ render() {
           })
         };
 
-        const uploadData = params => {
-          // Post form-data
-          upload({
+        const onSendPostForm = form => {
+          // Post form-data or x-www-form-urlencoded
+          sendPostForm({
             uri: "https://foo.url/bar",
-            params,
+            form,
             onResponse: data => {
               alert("Succeed!");
             }, onError: error => {
@@ -106,8 +106,8 @@ render() {
 
         return (
           <div>
-            <button onClick={() => postData({ key: 'value' })}>Post</button>
-            <button onClick={() => uploadData({ file: file.getReadStream() })}>Upload</button>
+            <button onClick={() => onSendPostJson({ key: 'value' })}>Post</button>
+            <button onClick={() => onSendPostForm({ key: 'value' })}>Upload</button>
           </div>
         );
       }}
@@ -119,7 +119,7 @@ render() {
 
 ### HOC
 
-We offer HOC to let you reduce the stack of DOMs and make your code prettier, Here is what we do about the `GET` method:
+`react-http-dom` offers HOC to let you reduce the stack of DOMs and make your code prettier, Here is what we do about the `GET` method:
 
 ```javascript
 import { withHttpGet } from 'http-react-dom';
@@ -148,21 +148,37 @@ class Foo extends Component {
   }
 }
 
-export default withHttpGet({ uri: "https://foo.url/bar" })(Foo);
+export default withHttpGet({ uri: "https://foo.url/bar?query=query" })(Foo);
 
 ```
 
 Every param you pass to the HOCs is completely the same as DOM components.
 
+For more examples, please refer to [Examples](/examples 'Examples').
+
 ### All Supported Methods
 
-| Method | DOM Name   | Props        | Injected Props                                                                                             | HOC Name       |
-| ------ | ---------- | ------------ | ---------------------------------------------------------------------------------------------------------- | -------------- |
-| GET    | HttpGet    | uri, options | loading, data, error, retry({ uri, options })                                                              | withHttpGet    |
-| HEAD   | HttpHead   | uri, options | loading, data, error, retry({ uri, options })                                                              | withHttpHead   |
-| POST   | HttpPost   | -            | post({ uri, params, options, onResponse, onError }), upload({ uri, params, options, onResponse, onError }) | withHttpPost   |
-| PUT    | HttpPut    | -            | put({ uri, params, options, onResponse, onError }), upload({ uri, params, options, onResponse, onError })  | withHttpPut    |
-| DELETE | HttpDelete | -            | delete({ uri, options, onResponse, onError })                                                              | withHttpDelete |
+| Method | DOM Name   | HOC Name       | Props                                                                                                                                                                             | Injected Props                                |
+| ------ | ---------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| GET    | HttpGet    | withHttpGet    | uri, options                                                                                                                                                                      | loading, data, error, retry({ uri, options }) |
+| HEAD   | HttpHead   | withHttpHead   | uri, options                                                                                                                                                                      | loading, data, error, retry({ uri, options }) |
+| POST   | HttpPost   | withHttpPost   | sendPostData({ uri, data, options, onResponse, onError }), sendPostjSON({ uri, json, options, onResponse, onError }),sendPostForm({ uri, form, options, onResponse, onError })    |                                               |
+| PUT    | HttpPut    | withHttpPut    | sendPutData({ uri, data, options, onResponse, onError }), sendPutjSON({ uri, json, options, onResponse, onError }),sendPutForm({ uri, form, options, onResponse, onError })       |                                               |
+| PATCH  | HttpPatch  | withHttpPatch  | sendPatchData({ uri, data, options, onResponse, onError }), sendPatchjSON({ uri, json, options, onResponse, onError }),sendPatchForm({ uri, form, options, onResponse, onError }) |                                               |
+| DELETE | HttpDelete | withHttpDelete | sendDelete({ uri, options, onResponse, onError })                                                                                                                                 |                                               |
+
+## Troubleshootings
+
+- Q: Why do I encounter an error says "Uncaught Error: Cannot find module 'net'/'fs'/'tls'"?
+- A: Due to browsers don't support some functions in Node.js, so you'd better ignore them, in order to do this please add the following node to your `webpack.config.js`:
+
+```javascript
+node: {
+  fs: 'empty',
+  net: 'empty',
+  tls: 'empty',
+},
+```
 
 ## License
 

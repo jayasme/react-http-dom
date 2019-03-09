@@ -86,12 +86,7 @@ Query.defaultProps = {
 Query.propTypes = {
   uri: PropTypes.string.isRequired,
   method: PropTypes.string.isRequired,
-  children: PropTypes.elementType({
-    data: PropTypes.object,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    retry: PropTypes.func,
-  }).isRequired,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   options: PropTypes.object,
 };
 

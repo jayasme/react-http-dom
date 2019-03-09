@@ -9,7 +9,7 @@ class HttpDelete extends PureComponent {
     return (
       <Mutation>
         {({ mutate }) => {
-          const sendDeleteRequest = (uri, options, onResponse, onError) => {
+          const sendDelete = ({ uri, options, onResponse, onError }) => {
             mutate({
               uri,
               method: 'DELETE',
@@ -20,7 +20,7 @@ class HttpDelete extends PureComponent {
           };
 
           return children({
-            delete: sendDeleteRequest,
+            sendDelete,
           });
         }}
       </Mutation>
@@ -28,25 +28,18 @@ class HttpDelete extends PureComponent {
   }
 }
 
+HttpDelete.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+};
+
 const withHttpDelete = () => WrappedComponent => {
   const EnhancedComponent = () => (
     <HttpDelete>
-      {({ sendDelete }) => <WrappedComponent delete={sendDelete} />}
+      {({ sendDelete }) => <WrappedComponent sendDelete={sendDelete} />}
     </HttpDelete>
   );
 
   return EnhancedComponent;
-};
-
-HttpDelete.propTypes = {
-  children: PropTypes.elementType({
-    sendDelete: PropTypes.elementType({
-      uri: PropTypes.string,
-      options: PropTypes.object,
-      onResponse: PropTypes.func,
-      onError: PropTypes.func,
-    }),
-  }).isRequired,
 };
 
 export { HttpDelete, withHttpDelete };

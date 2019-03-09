@@ -22,19 +22,16 @@ HttpGet.defaultProps = {
 
 HttpGet.propTypes = {
   uri: PropTypes.string.isRequired,
-  children: PropTypes.elementType({
-    data: PropTypes.object,
-    loading: PropTypes.bool,
-    error: PropTypes.object,
-    retry: PropTypes.func,
-  }).isRequired,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
   options: PropTypes.object,
 };
 
 const withHttpGet = ({ uri, options }) => WrappedComponent => {
   const EnhancedComponent = () => (
     <HttpGet uri={uri} options={options}>
-      {props => <WrappedComponent {...props} />}
+      {({ loading, error, data }) => (
+        <WrappedComponent loading={loading} error={error} data={data} />
+      )}
     </HttpGet>
   );
 

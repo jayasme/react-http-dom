@@ -3,16 +3,22 @@ import PropTypes from 'prop-types';
 
 import Mutation from './base/mutation';
 
-class HttpPut extends PureComponent {
+class HttpPatch extends PureComponent {
   render() {
     const { children } = this.props;
     return (
       <Mutation>
         {({ mutate }) => {
-          const sendPutData = ({ uri, data, options, onResponse, onError }) => {
+          const sendPatchData = ({
+            uri,
+            data,
+            options,
+            onResponse,
+            onError,
+          }) => {
             mutate({
               uri,
-              method: 'PUT',
+              method: 'PATCH',
               options: {
                 ...options,
                 body: data,
@@ -22,10 +28,16 @@ class HttpPut extends PureComponent {
             });
           };
 
-          const sendPutJson = ({ uri, json, options, onResponse, onError }) => {
+          const sendPatchJson = ({
+            uri,
+            json,
+            options,
+            onResponse,
+            onError,
+          }) => {
             mutate({
               uri,
-              method: 'PUT',
+              method: 'PATCH',
               options: {
                 ...options,
                 json,
@@ -35,7 +47,7 @@ class HttpPut extends PureComponent {
             });
           };
 
-          const sendPutForm = ({
+          const sendPatchForm = ({
             uri,
             form,
             options = {},
@@ -67,7 +79,7 @@ class HttpPut extends PureComponent {
 
             mutate({
               uri,
-              method: 'PUT',
+              method: 'PATCH',
               options: coptions,
               onResponse,
               onError,
@@ -75,9 +87,9 @@ class HttpPut extends PureComponent {
           };
 
           return children({
-            sendPutData,
-            sendPutJson,
-            sendPutForm,
+            sendPatchData,
+            sendPatchJson,
+            sendPatchForm,
           });
         }}
       </Mutation>
@@ -85,24 +97,24 @@ class HttpPut extends PureComponent {
   }
 }
 
-HttpPut.propTypes = {
+HttpPatch.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
 };
 
-const withHttpPut = () => WrappedComponent => {
+const withHttpPatch = () => WrappedComponent => {
   const EnhancedComponent = () => (
-    <HttpPut>
-      {({ sendPutData, sendPutJson, sendPutForm }) => (
+    <HttpPatch>
+      {({ sendPatchData, sendPatchJson, sendPatchForm }) => (
         <WrappedComponent
-          sendPutData={sendPutData}
-          sendPutJson={sendPutJson}
-          sendPutForm={sendPutForm}
+          sendPatchData={sendPatchData}
+          sendPatchJson={sendPatchJson}
+          sendPatchForm={sendPatchForm}
         />
       )}
-    </HttpPut>
+    </HttpPatch>
   );
 
   return EnhancedComponent;
 };
 
-export { HttpPut, withHttpPut };
+export { HttpPatch, withHttpPatch };

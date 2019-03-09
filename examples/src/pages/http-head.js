@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { HttpGet } from '../../../lib';
+import { HttpHead } from '../../../lib';
 
-const HttpGetPage = () => (
-  <HttpGet uri="http://httpbin.org/get?query=1">
+const HttpHeadPage = () => (
+  <HttpHead uri="http://httpbin.org/head">
     {({ loading, data, error }) => {
       if (error) {
         return (
@@ -20,7 +20,7 @@ const HttpGetPage = () => (
 
       return <pre>{data}</pre>;
     }}
-  </HttpGet>
+  </HttpHead>
 );
 
-export default HttpGetPage;
+export default HttpHeadPage;
