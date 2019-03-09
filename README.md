@@ -4,6 +4,8 @@ React DOMs for HTTP/HTTPS protocols.
 
 [![npm package](https://nodei.co/npm/react-http-dom.png)](https://nodei.co/npm/react-http-dom/)
 
+中文说明请点击[这里](/README.zh-CN.md '这里')。
+
 ## Introducing
 
 `react-http-dom` is a `React` lib that allows you to use `React DOM` to implement HTTP/HTTPS protocols. It supports `GET`,`HEAD`,`POST`,`PUT`,`PATCH`,`DELETE` these 6 methods.
